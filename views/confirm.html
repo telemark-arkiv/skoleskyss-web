@@ -1,0 +1,34 @@
+<div class="mdl-card mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-color-text--black">
+        <h1 class="margin-bottom-10">Innhentet informasjon</h1>
+    </div>
+    <form action="/confirm" method="post">
+        <input type="hidden" name="stepName" value="confirm">
+        <div class="mdl-card__supporting-text mdl-color-text--black">
+            <div class="fontBigger margin-bottom-10">
+                Folkeregistrert bosted:<br />
+                {{showDsfBosted dsfData}}
+            </div>
+            <div class="fontBigger margin-bottom-10">
+                Kontaktinformasjon: <br />
+                {{{showKorData korData}}}
+            </div>
+            <div class="mdl-typography--headline">
+                Stemmer disse opplysningene?
+            </div>
+            <label for="confirmRadio01" class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+                <input type="radio" name="confirmed" value="ja" id="confirmRadio01" class="mdl-radio__button warning-type-selector" required="required">
+                <span class="mdl-radio__label">Ja, alle opplysningene er riktige.</span>
+            </label><br />
+            <label for="confirmRadio02" class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+                <input type="radio" name="confirmed" value="nei" id="confirmRadio02" class="mdl-radio__button warning-type-selector" required="required">
+                <span class="mdl-radio__label">Nei, her er det noe galt.</span>
+            </label><br />
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a href="/previous" title="Gå til forrige punkt i søknaden" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton">Forrige</a>
+            <div class="mdl-layout-spacer"></div>
+            <button type="submit" title="Gå til neste punkt i søknaden" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton">Neste</button>
+        </div>
+    </form>
+</div>

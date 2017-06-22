@@ -1,0 +1,71 @@
+<div class="mdl-card mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-color-text--black">
+        <h1 class="margin-bottom-10">Kvittering</h1>
+    </div>
+    <div class="mdl-card__supporting-text mdl-color-text--black">
+        <div class="mdl-typography--headline">
+            Din søknad er mottatt
+        </div>
+        <div class="fontBigger margin-top-10">
+            Her er informasjonen som er innsendt.
+        </div>
+        <div class="mdl-typography--headline margin-top-10">
+            Personalia
+        </div>
+        <div class="fontBigger">
+            {{{showDsfPersonalia document.dsfData}}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">
+            Folkeregistrert bosted
+        </div>
+        <div class="fontBigger">
+            {{showDsfBosted document.dsfData}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">
+            Kontaktinformasjon
+        </div>
+        <div class="fontBigger">
+            {{{showKorData document.korData}}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">
+            Skole
+        </div>
+        <div class="fontBigger">
+            {{document.velgklasse.klassetrinn}} {{document.skoleData.name}} {{showLinje document}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">
+            Bosted
+        </div>
+        <div class="fontBigger">
+            {{{showBosted document}}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">
+            Grunnlag for søknad
+        </div>
+        <div class="fontBigger">
+            {{document.grunnlag.grunnlag}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">
+            Busskort
+        </div>
+        <div class="fontBigger">
+            {{{ showBusskort document}}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">
+            Merknader
+        </div>
+        <div class="fontBigger margin-bottom-10">
+            {{{ showMerknader document}}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">
+            Vilkår
+        </div>
+        <div class="fontBigger">
+            Jeg godtar <a href="/vilkar">vilkårene</a> for skoleskyss
+        </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-layout-spacer"></div>
+        <a href="/loggav" title="Avslutt og logg ut av ID-Porten" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton">Avslutt</a>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="mdl-card mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-color-text--black">
+        <h1 class="margin-bottom-10">Beregnet avstand</h1>
+    </div>
+    <div class="mdl-card__supporting-text mdl-color-text--black fontBigger">
+        <div class="mdl-typography--headline">Skole</div>
+        <div class="fontBigger">
+            {{skoleData.name}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">Adresse</div>
+        <div class="fontBigger">
+            {{address}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">Avstand</div>
+        <div class="fontBigger">
+            {{distance.distance}}
+        </div>
+        <div class="mdl-typography--headline margin-top-10">Rute</div>
+        <a href="{{distance.staticMapUrl}}" target="_blank">Vis på kart</a>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-layout-spacer"></div>
+        <a href="/avstand" title="Sjekk avstand" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton">Beregn ny avstand</a>
+    </div>
+</div>

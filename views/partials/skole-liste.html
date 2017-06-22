@@ -1,0 +1,11 @@
+{{#each skoler}}
+<label for="skoleRadio{{id}}" class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+    <input type="radio" name="skole" value="{{id}}" id="skoleRadio{{id}}" class="mdl-radio__button warning-type-selector">
+    <span class="mdl-radio__label">{{name}}</span>
+</label><br/>
+{{/each}}
+<div class="mdl-typography--headline margin-top-10">Andre</div>
+<label for="skoleRadio0000" class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+    <input type="radio" name="skole" value="0000" id="skoleRadio0000" class="mdl-radio__button warning-type-selector">
+    <span class="mdl-radio__label">Skole utenfor Telemark</span>
+</label>

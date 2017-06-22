@@ -1,0 +1,6 @@
+{{#each grunnlagListe}}
+<label for="grunnlagRadio{{id}}" class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+    <input type="radio" name="grunnlag" value="{{value}}" id="grunnlagRadio{{id}}" class="mdl-radio__button warning-type-selector">
+    <span class="mdl-radio__label">{{name}}</span>
+</label><br />
+{{/each}}

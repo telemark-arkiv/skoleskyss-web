@@ -1,0 +1,30 @@
+<div class="mdl-card mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-color-text--black">
+        <h1 class="margin-bottom-10">Bosted</h1>
+    </div>
+    <form action="/next" method="post">
+        <input type="hidden" name="stepName" value="bosted">
+        <div class="mdl-card__supporting-text mdl-color-text--black">
+            <div class="mdl-typography--headline">
+                Hvor skal du bo i skoleperioden?
+            </div>
+            <label for="bostedRadio01" class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+                <input type="radio" name="bosted" value="folkeregistrert" id="bostedRadio01" class="mdl-radio__button warning-type-selector" required="required">
+                <span class="mdl-radio__label">{{showDsfBosted dsfData}}</span>
+            </label><br />
+            <label for="bostedRadio02" class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+                <input type="radio" name="bosted" value="hybel" id="bostedRadio02" class="mdl-radio__button warning-type-selector" required="required">
+                <span class="mdl-radio__label">Jeg skal bo på hybel</span>
+            </label><br />
+            <label for="bostedRadio03" class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+                <input type="radio" name="bosted" value="delt" id="bostedRadio03" class="mdl-radio__button warning-type-selector" required="required">
+                <span class="mdl-radio__label">Jeg har delt bosted ({{showDsfBosted dsfData}} og et sted til)</span>
+            </label><br />
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a href="/previous" title="Gå til forrige punkt i søknaden" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton">Forrige</a>
+            <div class="mdl-layout-spacer"></div>
+            <button type="submit" title="Gå til neste punkt i søknaden" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton">Neste</button>
+        </div>
+    </form>
+</div>

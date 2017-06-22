@@ -1,0 +1,182 @@
+[
+  {
+    "id": "39601",
+    "name": "Bamble videregående skole, avdeling Grasmyr",
+    "address": "Tønderveien 6, 3960 Stathelle",
+    "geocoded": {
+      "lat": "59.02786",
+      "lon": "9.70322"
+    }
+  },
+  {
+    "id": "39602",
+    "name": "Bamble videregående skole, avdeling Croftholmen",
+    "address": "Tostrupsvei 7, 3960 Stathelle",
+    "geocoded": {
+      "lat": "59.04435",
+      "lon": "9.70618"
+    }
+  },
+  {
+    "id": "3802",
+    "name": "Bø videregåande skule",
+    "address": "Gymnasbakken 23, 3802 Bø",
+    "geocoded": {
+      "lat": "59.41723",
+      "lon": "9.06292"
+    }
+  },
+  {
+    "id": "3733",
+    "name": "Hjalmar Johansen videregående skole, avdeling Fritidsparken",
+    "address": "Moflatvegen 38, 3733 Skien",
+    "geocoded": {
+      "lat": "59.18662",
+      "lon": "9.59623"
+    }
+  },
+  {
+    "id": "3730",
+    "name": "Hjalmar Johansen videregående skole, avdeling Klosterskogen",
+    "address": "Olai Skulleruds veg 20, 3730 Skien",
+    "geocoded": {
+      "lat": "59.19259",
+      "lon": "9.59966"
+    }
+  },
+  {
+    "id": "3716",
+    "name": "Hjalmar Johansen videregående skole, avdeling Kompetansesenteret",
+    "address": "Jernbanevegen 14, 3716 Skien",
+    "geocoded": {
+      "lat": "59.2205",
+      "lon": "9.60291"
+    }
+  },
+  {
+    "id": "3770",
+    "name": "Kragerø videregående skole",
+    "address": "Frydensborgveien 9-11, 3770 Kragerø",
+    "geocoded": {
+      "lat": "58.87151",
+      "lon": "9.39249"
+    }
+  },
+  {
+    "id": "3850",
+    "name": "Kvitsund gymnas",
+    "address": "Jakob Naadlandsveg 2, 3850 Kviteseid",
+    "geocoded": {
+      "lat": "59.38233",
+      "lon": "8.52044"
+    }
+  },
+  {
+    "id": "3825",
+    "name": "Nome videregående skole, avdeling Lunde",
+    "address": "Olav Strannas vei 25, 3825 Lunde",
+    "geocoded": {
+      "lat": "59.30083",
+      "lon": "9.10652"
+    }
+  },
+  {
+    "id": "3830",
+    "name": "Nome videregående skole, avdeling Søve",
+    "address": "Søveveien 8, 3830 Ulefoss",
+    "geocoded": {
+      "lat": "59.27845",
+      "lon": "9.28459"
+    }
+  },
+  {
+    "id": "3674",
+    "name": "Notodden videregående skole",
+    "address": "Heddalsveien 4, 3674 Notodden",
+    "geocoded": {
+      "lat": "59.55564",
+      "lon": "9.25747"
+    }
+  },
+  {
+    "id": "39181",
+    "name": "Porsgrunn videregående skole, avdeling Nord",
+    "address": "Kjølnes Ring 58, 3918 Porsgrunn",
+    "geocoded": {
+      "lat": "59.13854",
+      "lon": "9.6687"
+    }
+  },
+  {
+    "id": "39182",
+    "name": "Porsgrunn videregående skole, avdeling Sør",
+    "address": "Kjølnes Ring 20, 3918 Porsgrunn",
+    "geocoded": {
+      "lat": "59.13585",
+      "lon": "9.67533"
+    }
+  },
+  {
+    "id": "3660",
+    "name": "Rjukan videregående skole",
+    "address": "Såheimveien 22, 3660 Rjukan",
+    "geocoded": {
+      "lat": "59.87821",
+      "lon": "8.58058"
+    }
+  },
+  {
+    "id": "3717",
+    "name": "Skien videregående skole, avdeling Brekkeby",
+    "address": "Rektor Ørns gate 2, 3717 Skien",
+    "geocoded": {
+      "lat": "59.21282",
+      "lon": "9.60775"
+    }
+  },
+  {
+    "id": "3724",
+    "name": "Skien videregående skole, avdeling Prestejordet",
+    "address": "Einar Østvedts gate 12, 3724 Skien",
+    "geocoded": {
+      "lat": "59.20619",
+      "lon": "9.60406"
+    }
+  },
+  {
+    "id": "3735",
+    "name": "Skogmo videregående skole",
+    "address": "Kjørbekkdalen 11, 3735 Skien",
+    "geocoded": {
+      "lat": "59.17301",
+      "lon": "9.62081"
+    }
+  },
+  {
+    "id": "3722",
+    "name": "Toppidrettsgymnaset i Telemark",
+    "address": "Fritjof Nansens gate 19C, 3722 Skien",
+    "geocoded": {
+      "lat": "59.21168",
+      "lon": "9.59118"
+    }
+  },
+  {
+    "id": "3880",
+    "name": "Vest-Telemark vidaregåande skule, avdeling Dalen",
+    "address": "Storvegen 195, 3880 Dalen",
+    "geocoded": {
+      "lat": "59.44657",
+      "lon": "7.98785"
+    }
+  },
+  {
+    "id": "3840",
+    "name": "Vest-Telemark vidaregåande skule, avdeling Seljord",
+    "address": "Brøløsvegen 2, 3840 Seljord",
+    "geocoded": {
+      "lat": "59.48254",
+      "lon": "8.62049"
+    }
+  }
+]

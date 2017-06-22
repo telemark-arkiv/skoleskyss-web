@@ -1,0 +1,88 @@
+<div class="mdl-card mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-color-text--black">
+        <h1 class="margin-bottom-10">Sammendrag</h1>
+    </div>
+    <form action="/submit" method="post">
+        <div class="mdl-card__supporting-text mdl-color-text--black">
+            <div class="mdl-typography--headline">
+                Personalia
+            </div>
+            <div class="fontBigger">
+                {{{showDsfPersonalia document.dsfData}}}
+            </div>
+            <div class="mdl-typography--headline margin-top-10">
+                Folkeregistrert bosted
+            </div>
+            <div class="fontBigger">
+                {{showDsfBosted document.dsfData}}
+            </div>
+            <div class="mdl-typography--headline margin-top-10">
+                Kontaktinformasjon
+            </div>
+            <div class="fontBigger">
+                {{{showKorData document.korData}}}
+            </div>
+            <div class="mdl-typography--headline margin-top-10">
+                Skole
+            </div>
+            <div class="fontBigger margin-bottom-10">
+                {{document.velgklasse.klassetrinn}} {{document.skoleData.name}} {{showLinje document}}
+            </div>
+            <div>
+                <a href="/endre?type=skole" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton" title="Endre valgt skole">Endre opplysinger om skole</a>
+            </div>
+            <div class="mdl-typography--headline margin-top-10">
+                Bosted
+            </div>
+            <div class="fontBigger margin-bottom-10">
+                {{{showBosted document}}}
+            </div>
+            <div>
+                <a href="/endre?type=bosted" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton" title="Endre valgt skole">
+                    Endre opplysninger om bosted
+                </a>
+            </div>
+            <div class="mdl-typography--headline margin-top-10">
+                Grunnlag for søknad
+            </div>
+            <div class="fontBigger margin-bottom-10">
+                {{document.grunnlag.grunnlag}}
+            </div>
+            <div>
+                <a href="/endre?type=grunnlag" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton" title="Endre grunnlag for søknad">
+                    Endre grunnlag for søknad
+                </a>
+            </div>
+            <div class="mdl-typography--headline margin-top-10">
+                Busskort
+            </div>
+            <div class="fontBigger margin-bottom-10">
+                {{{ showBusskort document}}}
+            </div>
+            <div>
+                <a href="/endre?type=busskort" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton" title="Endre valgt skole">
+                    Endre opplysninger om busskort
+                </a>
+            </div>
+            <div class="mdl-typography--headline margin-top-10">
+                Merknader
+            </div>
+            <div class="fontBigger margin-bottom-10">
+                {{{ showMerknader document}}}
+            </div>
+            <div class="mdl-typography--headline margin-top-10">
+                Vilkår
+            </div>
+            <label for="termsAcceptedChkBx" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect chxBxorden">
+                <input type="checkbox" name="termsAccepted" value="1" id="termsAcceptedChkBx" class="mdl-checkbox__input" required="required">
+                <span class="mdl-checkbox__label fontBigger">Jeg godtar <a href="/vilkar">vilkårene</a> for skoleskyss</span>
+            </label>
+
+        </div>
+        <input type="hidden" name="stepName" value="seover">
+    <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-layout-spacer"></div>
+        <button type="submit" title="Send inn søknaden" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton">Send søknad</button>
+    </div>
+    </form>
+</div>

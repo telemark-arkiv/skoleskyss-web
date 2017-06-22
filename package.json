@@ -1,0 +1,81 @@
+{
+  "name": "skoleskyss-web",
+  "version": "1.0.0",
+  "description": "Søk skoleskyss i Telemark",
+  "license": "MIT",
+  "private": true,
+  "author": {
+    "name": "Geir Gåsodden",
+    "email": "geir.gasodden@pythonia.no",
+    "url": "https://github.com/zrrrzzt"
+  },
+  "contributors": [
+    {
+      "name": "Jonas Enge",
+      "email": "jonas.enge@gmail.com",
+      "url": "https://github.com/maccyber"
+    }
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.1.2"
+  },
+  "scripts": {
+    "start": "node standalone.js",
+    "dev": "NODE_ENV=development node standalone.js",
+    "test": "standard &&  nsp check && tap --reporter=spec test/**/*.js",
+    "coverage": "tap test/**/*.js --coverage",
+    "coveralls": "tap --cov --coverage-report=lcov test/**/*.js && cat coverage/lcov.info | coveralls",
+    "standard-fix": "standard --fix"
+  },
+  "keywords": [
+    "Louie",
+    "Telemark fylkeskommune",
+    "Tfk",
+    "Digitalisering",
+    "Skoleskyss"
+  ],
+  "standard": {
+    "ignore": [
+      "public"
+    ]
+  },
+  "louie": {
+    "versionName": "Motörhead",
+    "versionVideoUrl": "https://www.youtube.com/watch?v=WDP7_h4wkgw",
+    "systemName": "skoleskyss"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/telemark/skoleskyss-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/telemark/skoleskyss-web/issues"
+  },
+  "homepage": "https://github.com/telemark/skoleskyss-web",
+  "devDependencies": {
+    "coveralls": "2.13.1",
+    "nsp": "2.6.3",
+    "standard": "10.0.2",
+    "tap": "10.5.1"
+  },
+  "dependencies": {
+    "axios": "0.16.2",
+    "get-skole-aar": "1.0.0",
+    "good": "7.2.0",
+    "good-console": "6.4.0",
+    "good-squeeze": "5.0.2",
+    "handlebars": "4.0.10",
+    "hapi": "16.4.3",
+    "hapi-auth-cookie": "7.0.0",
+    "hoek": "4.1.1",
+    "inert": "4.2.0",
+    "jsonwebtoken": "7.4.1",
+    "simple-encryptor": "1.1.0",
+    "tfk-saksbehandling-skoleskyss-waypoints": "1.0.11",
+    "vision": "4.1.1",
+    "winston": "2.3.1",
+    "winston-papertrail": "1.0.5",
+    "yar": "8.1.2"
+  }
+}

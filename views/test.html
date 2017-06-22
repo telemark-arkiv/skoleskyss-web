@@ -1,0 +1,94 @@
+<div class="mdl-card mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-color-text--black">
+        <h1 class="margin-bottom-10">Testoppsett</h1>
+    </div>
+    <form action="/test" method="post">
+        <div class="mdl-card__supporting-text mdl-color-text--black">
+            <div class="mdl-typography--headline">Session</div>
+            <label for="resetSessionChkBx" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect chxBxorden">
+                <input type="checkbox" name="resetSession" value="1" id="resetSessionChkBx" class="mdl-checkbox__input" checked="checked">
+                <span class="mdl-checkbox__label">Reset session</span>
+            </label>
+            <div class="mdl-typography--headline">Settings</div>
+            <label for="dsfErrorChkBx" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect chxBxorden">
+                <input type="checkbox" name="dsfError" value="1" id="dsfErrorChkBx" class="mdl-checkbox__input">
+                <span class="mdl-checkbox__label">Feil fra dsf</span>
+            </label>
+            <label for="korErrorChkBx" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect chxBxorden">
+                <input type="checkbox" name="korError" value="1" id="korErrorChkBx" class="mdl-checkbox__input">
+                <span class="mdl-checkbox__label">Feil fra kontakt- og reservasjonsregisteret</span>
+            </label>
+            <label for="personAlreadyAppliedChkBx" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect chxBxorden">
+                <input type="checkbox" name="personAlreadyApplied" value="1" id="personAlreadyAppliedChkBx" class="mdl-checkbox__input">
+                <span class="mdl-checkbox__label">Person søkt tidligere</span>
+            </label>
+            <label for="duplicateApplicationChkBx" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect chxBxorden">
+                <input type="checkbox" name="duplicateApplication" value="1" id="duplicateApplicationChkBx" class="mdl-checkbox__input">
+                <span class="mdl-checkbox__label">Duplikatsøknad</span>
+            </label>
+            <div class="mdl-typography--headline">Personalia</div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="NAVN-S" name="NAVN-S">
+                <label class="mdl-textfield__label" for="NAVN-S">Etternavn</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="NAVN-F" name="NAVN-F">
+                <label class="mdl-textfield__label" for="NAVN-F">Fornavn</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="NAVN-M" name="NAVN-M">
+                <label class="mdl-textfield__label" for="NAVN-M">Mellomnavn</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="NAVN" name="NAVN">
+                <label class="mdl-textfield__label" for="NAVN">Fullt navn</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="FODT" name="FODT">
+                <label class="mdl-textfield__label" for="FODT">FODT</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="PERS" name="PERS">
+                <label class="mdl-textfield__label" for="PERS">PERS</label>
+            </div>
+            <div class="mdl-typography--headline">Kontaktinformasjon</div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="MobilePhone" name="MobilePhone">
+                <label class="mdl-textfield__label" for="MobilePhone">Mobiltelefonnummer</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="Email" name="Email">
+                <label class="mdl-textfield__label" for="Email">Epostadresse</label>
+            </div>
+            <div class="mdl-typography--headline">Folkeregistrert adresse</div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="ADR" name="ADR">
+                <label class="mdl-textfield__label" for="ADR">Adresse</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="POSTN" name="POSTN">
+                <label class="mdl-textfield__label" for="POSTN">Postnummer</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="POSTS" name="POSTS">
+                <label class="mdl-textfield__label" for="POSTS">Poststed</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="GARD" name="GARD">
+                <label class="mdl-textfield__label" for="GARD">Gårdsnummer</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="KOMNR" name="KOMNR">
+                <label class="mdl-textfield__label" for="KOMNR">Kommunenummer</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="BRUK" name="BRUK">
+                <label class="mdl-textfield__label" for="BRUK">Bruksnummer</label>
+            </div>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <div class="mdl-layout-spacer"></div>
+            <button type="submit" title="Start test" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton">Start test</button>
+        </div>
+    </form>
+</div>

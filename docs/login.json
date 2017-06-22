@@ -1,0 +1,22 @@
+{
+  "dsfData": {
+    "NAVN-S": "string",
+    "NAVN-F": "string",
+    "NAVN-M": "string",
+    "NAVN": "string",
+    "FODT": "string",
+    "ADR": "string",
+    "POSTN": "string",
+    "POSTS": "string",
+    "GARD": "string",
+    "KOMNR": "string",
+    "BRUK": "string"
+
+  },
+  "dsfError": false,
+  "korData": {
+    "Mobiltelefonnummer": "string",
+    "Epostadresse": "string"
+  },
+  "korError": false
+}

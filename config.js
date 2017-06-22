@@ -10,6 +10,7 @@ module.exports = {
   COOKIE_SECRET: process.env.COOKIE_SECRET || 'Louie Louie, oh no, I got to go. Louie Louie, oh no, I got to go',
   YAR_SECRET: process.env.YAR_SECRET || 'Louie Louie, oh no, I got to go. Louie Louie, oh no, I got to go',
   LOGS_SERVICE: process.env.LOGS_SERVICE || 'https://logs.skoleskyss.com',
+  SESSIONS_SERVICE: process.env.SESSIONS_SERVICE || 'https://sessions.service.io',
   SMS_SERVICE: process.env.SMS_SERVICE || 'https://sms.service.io',
   PAPERTRAIL_HOSTNAME: process.env.PAPERTRAIL_HOSTNAME || 'skoleskyss',
   PAPERTRAIL_HOST: process.env.PAPERTRAIL_HOST || 'logs.papertrailapp.com',

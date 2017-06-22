@@ -91,7 +91,7 @@ module.exports.getPreviousStep = (request, reply) => {
 }
 
 module.exports.showSeOver = async (request, reply) => {
-  const logoutUrl = config.SKOLESKYSS_AUTH_URL_LOGOUT
+  const logoutUrl = config.AUTH_URL_LOGOUT
   var viewOptions = {
     version: pkg.version,
     versionName: pkg.louie.versionName,
@@ -183,7 +183,7 @@ module.exports.showGrunnlag = async (request, reply) => {
 }
 
 module.exports.showBusskort = async (request, reply) => {
-  const logoutUrl = config.SKOLESKYSS_AUTH_URL_LOGOUT
+  const logoutUrl = config.AUTH_URL_LOGOUT
   const viewOptions = {
     version: pkg.version,
     versionName: pkg.louie.versionName,

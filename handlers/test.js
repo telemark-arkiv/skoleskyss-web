@@ -8,7 +8,7 @@ const skoler = require('../lib/data/skoler.json')
 const getSkoleFromId = require('../lib/get-skole-from-id')
 
 module.exports.showTest = function showTest (request, reply) {
-  const logoutUrl = config.SKOLESKYSS_AUTH_URL_LOGOUT
+  const logoutUrl = config.AUTH_URL_LOGOUT
   const viewOptions = {
     version: pkg.version,
     versionName: pkg.louie.versionName,
@@ -41,7 +41,7 @@ module.exports.setupTest = function setupTest (request, reply) {
     uid: payload.FODT.toString() + payload.PERS.toString(),
     MobilePhone: payload.MobilePhone,
     Email: payload.Email,
-    logoutUrl: config.SKOLESKYSS_AUTH_URL_LOGOUT
+    logoutUrl: config.AUTH_URL_LOGOUT
   }
 
   if (payload.resetSession) {
@@ -73,7 +73,7 @@ module.exports.setupTest = function setupTest (request, reply) {
     korData: korData
   }
 
-  const token = jwt.sign(data, config.SKOLESKYSS_JWT_SECRET, tokenOptions)
+  const token = jwt.sign(data, config.JWT_SECRET, tokenOptions)
 
   request.yar.set('dsfData', data.dsfData)
   request.yar.set('korData', data.korData)
@@ -88,7 +88,7 @@ module.exports.setupTest = function setupTest (request, reply) {
 }
 
 module.exports.showAvstand = function showAvstand (request, reply) {
-  const logoutUrl = config.SKOLESKYSS_AUTH_URL_LOGOUT
+  const logoutUrl = config.AUTH_URL_LOGOUT
   const viewOptions = {
     version: pkg.version,
     versionName: pkg.louie.versionName,
@@ -131,7 +131,7 @@ module.exports.calculateAvstand = function (request, reply) {
         if (err) {
           reply(err)
         } else {
-          const logoutUrl = config.SKOLESKYSS_AUTH_URL_LOGOUT
+          const logoutUrl = config.AUTH_URL_LOGOUT
           const viewOptions = {
             version: pkg.version,
             versionName: pkg.louie.versionName,

@@ -1,7 +1,6 @@
 'use strict'
 
 const Hapi = require('hapi')
-const Hoek = require('hoek')
 const hapiAuthCookie = require('hapi-auth-cookie')
 const server = new Hapi.Server()
 const config = require('./config')
@@ -24,17 +23,18 @@ const goodOptions = {
 const yarOptions = {
   storeBlank: false,
   cookieOptions: {
-    password: config.SKOLESKYSS_YAR_SECRET,
+    password: config.YAR_SECRET,
     isSecure: process.env.NODE_ENV !== 'development',
     isSameSite: 'Lax'
   }
 }
 
-const authPlugins = [
-  {
-    register: hapiAuthCookie,
-    options: {}
-  }
+const plugins = [
+  { register: hapiAuthCookie },
+  { register: require('vision') },
+  { register: require('inert') },
+  { register: require('yar'), options: yarOptions },
+  { register: require('good'), options: goodOptions }
 ]
 
 function endIfError (error) {
@@ -44,33 +44,12 @@ function endIfError (error) {
   }
 }
 
-server.register(plugins, function (error) {
-  endIfError(error)
-})
-
 server.connection({
-  port: config.SKOLESKYSS_SERVER_PORT_WEB
+  port: config.SERVER_PORT_WEB
 })
 
-server.register(authPlugins, function (error) {
+server.register(plugins, error => {
   endIfError(error)
-
-  server.auth.strategy('session', 'cookie', {
-    password: config.SKOLESKYSS_COOKIE_SECRET,
-    cookie: 'skoleskyss-session',
-    validateFunc: validate,
-    redirectTo: config.SKOLESKYSS_AUTH_URL_LOGIN,
-    isSecure: false,
-    isSameSite: 'Lax'
-  })
-
-  server.auth.default('session')
-
-  registerRoutes()
-})
-
-server.register(require('vision'), function (err) {
-  Hoek.assert(!err, err)
 
   server.views({
     engines: {
@@ -84,12 +63,7 @@ server.register(require('vision'), function (err) {
     layout: true,
     compileMode: 'sync'
   })
-})
 
-server.register(require('inert'), function (err) {
-  if (err) {
-    throw err
-  }
   server.route({
     method: 'GET',
     path: '/public/{param*}',
@@ -102,24 +76,19 @@ server.register(require('inert'), function (err) {
       auth: false
     }
   })
-})
 
-server.register({
-  register: require('yar'),
-  options: yarOptions
-}, function (err) {
-  if (err) {
-    console.error('Failed to load a plugin:', err)
-  }
-})
+  server.auth.strategy('session', 'cookie', {
+    password: config.COOKIE_SECRET,
+    cookie: 'skoleskyss-session',
+    validateFunc: validate,
+    redirectTo: config.AUTH_URL_LOGIN,
+    isSecure: false,
+    isSameSite: 'Lax'
+  })
 
-server.register({
-  register: require('good'),
-  options: goodOptions
-}, function (err) {
-  if (err) {
-    console.error(err)
-  }
+  server.auth.default('session')
+
+  registerRoutes()
 })
 
 function registerRoutes () {

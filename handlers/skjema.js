@@ -11,13 +11,16 @@ const generateGrunnlagListe = require('../lib/generate-grunnlag-liste')
 const generateLinjeListe = require('../lib/generate-studieretning-liste')
 const prepareDataForSubmit = require('../lib/prepare-data-for-submit')
 const prepareDuplicateData = require('../lib/prepare-data-for-duplicates')
+const logger = require('../lib/logger')
 const pkg = require('../package.json')
 
 module.exports.getNext = async (request, reply) => {
   const payload = request.payload
   const yar = request.yar
+  const applicantId = yar.get('applicantId')
   if (payload) {
-    var completedSteps = yar.get('completedSteps') || []
+    logger('info', ['skjema', 'getNext', applicantId, 'payload'])
+    let completedSteps = yar.get('completedSteps') || []
     completedSteps.push(payload.stepName)
     yar.set(payload.stepName, payload)
     yar.set('completedSteps', completedSteps)
@@ -28,14 +31,16 @@ module.exports.getNext = async (request, reply) => {
   }
 
   const nextForm = getNextForm(yar._store)
+  logger('info', ['skjema', 'getNext', applicantId, 'nextForm', nextForm])
   if (payload && payload.stepName === 'grunnlag') {
-    prepareDataForSubmit(request, (error, document) => {
+    prepareDataForSubmit(request, async (error, document) => {
       if (error) {
         reply(error)
       } else {
         const dsfData = yar.get('dsfData')
         const fodselsNummer = dsfData.FODT.toString() + dsfData.PERS.toString()
         const duplicateData = prepareDuplicateData(document)
+        // Is this a duplicate
         request.seneca.act({role: 'duplicate', cmd: 'check', duplicateId: fodselsNummer, duplicateData: duplicateData}, function checkDuplicated (error, data) {
           if (error) {
             reply(error)
@@ -125,7 +130,7 @@ module.exports.showBosted = async (request, reply) => {
     logoutUrl: logoutUrl,
     dsfData: dsfData
   }
-
+  // Lookup address
   request.seneca.act({
     role: 'lookup',
     cmd: 'seeiendom',
@@ -259,6 +264,7 @@ module.exports.showVelgSkole = async (request, reply) => {
     const key = hybel ? 'see-hybel' : 'see-delt'
     const data = hybel || delt
     const address = extractAdressToGeocode(data)
+    // lookup address
     request.seneca.act({
       role: 'lookup',
       cmd: 'seeiendom',
@@ -306,6 +312,7 @@ module.exports.showVelgKlasse = async (request, reply) => {
   if (valgtskole.skole !== '0000') {
     const skole = getSkoleFromId(valgtskole.skole)
     const destination = unwrapGeocoded(skole)
+    // Calculating walking distance to selected school
     request.seneca.act({role: 'session', cmd: 'get', sessionId: sessionId}, function (error, data) {
       if (error) {
         console.error(error)
@@ -429,11 +436,13 @@ module.exports.doSubmit = async (request, reply) => {
     } else {
       yar.set('submittedData', document)
       const duplicateData = prepareDuplicateData(document)
+      // Saves document, posts stats, saves duplicate data, updates queue counter, clears session
       request.seneca.act({role: 'queue', cmd: 'add', data: document})
       request.seneca.act({role: 'counter', cmd: 'add', key: 'skoleskyss/queue'})
       request.seneca.act({role: 'info', info: 'skoleskyss', data: document})
       request.seneca.act({role: 'duplicate', cmd: 'set', duplicateId: fodselsNummer, data: duplicateData})
       request.seneca.act({role: 'session', cmd: 'clear', sessionId: sessionId})
+      // Send sms if mobile phone
       if (korData.MobilePhone !== '') {
         request.seneca.act({role: 'message', cmd: 'sms', phone: korData.MobilePhone})
       }
@@ -488,6 +497,7 @@ module.exports.checkConfirm = async (request, reply) => {
     var completedSteps = yar.get('completedSteps') || []
     completedSteps.push('confirm')
     yar.set('completedSteps', completedSteps)
+    // Is this the first application?
     request.seneca.act({role: 'duplicate', cmd: 'check', duplicateId: fodselsNummer}, function checkDuplicated (error, data) {
       if (error) {
         reply(error)

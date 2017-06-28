@@ -11,6 +11,7 @@ const generateGrunnlagListe = require('../lib/generate-grunnlag-liste')
 const generateLinjeListe = require('../lib/generate-studieretning-liste')
 const prepareDataForSubmit = require('../lib/prepare-data-for-submit')
 const prepareDuplicateData = require('../lib/prepare-data-for-duplicates')
+const checkPreviousApplications = require('../lib/check-previous-applications')
 const logger = require('../lib/logger')
 const pkg = require('../package.json')
 
@@ -489,28 +490,24 @@ module.exports.showConfirm = async (request, reply) => {
 
 module.exports.checkConfirm = async (request, reply) => {
   const yar = request.yar
-  const dsfData = yar.get('dsfData')
+  const applicantId = yar.get('applicantId')
   const payload = request.payload
-  const fodselsNummer = dsfData.FODT.toString() + dsfData.PERS.toString()
-
   if (payload.confirmed === 'ja') {
-    var completedSteps = yar.get('completedSteps') || []
+    logger('info', ['skjema', 'checkConfirm', 'applicantId', applicantId, 'confirmed'])
+    const completedSteps = yar.get('completedSteps') || []
     completedSteps.push('confirm')
     yar.set('completedSteps', completedSteps)
     // Is this the first application?
-    request.seneca.act({role: 'duplicate', cmd: 'check', duplicateId: fodselsNummer}, function checkDuplicated (error, data) {
-      if (error) {
-        reply(error)
-      } else {
-        if (data.duplicate || yar.get('tidligereSoknad')) {
-          request.yar.set('tidligereSoknad', true)
-          reply.redirect('/sokttidligere')
-        } else {
-          reply.redirect('/next')
-        }
-      }
-    })
+    const duplicate = await checkPreviousApplications(applicantId)
+    if (duplicate || yar.get('tidligereSoknad')) {
+      logger('info', ['skjema', 'checkConfirm', 'applicantId', applicantId, 'isDuplicate'])
+      request.yar.set('tidligereSoknad', true)
+      reply.redirect('/sokttidligere')
+    } else {
+      reply.redirect('/next')
+    }
   } else {
+    logger('info', ['skjema', 'checkConfirm', 'applicantId', applicantId, 'fresh applicant'])
     reply.redirect('/uriktigeopplysninger')
   }
 }

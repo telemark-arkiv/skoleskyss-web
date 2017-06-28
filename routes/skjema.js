@@ -78,6 +78,15 @@ module.exports = [
   },
   {
     method: 'GET',
+    path: '/feil',
+    config: {
+      auth: false,
+      handler: Handlers.showFeil,
+      description: 'Show the error page'
+    }
+  },
+  {
+    method: 'GET',
     path: '/failwhale',
     config: {
       auth: false,
@@ -137,6 +146,7 @@ module.exports = [
     method: 'GET',
     path: '/uriktigeopplysninger',
     config: {
+      auth: false,
       handler: Handlers.showUriktigeOpplysninger,
       description: 'Show page for uriktige opplysninger'
     }

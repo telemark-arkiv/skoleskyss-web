@@ -10,8 +10,9 @@ const getSkoleFromId = require('../lib/get-skole-from-id')
 const generateGrunnlagListe = require('../lib/generate-grunnlag-liste')
 const generateLinjeListe = require('../lib/generate-studieretning-liste')
 const prepareDataForSubmit = require('../lib/prepare-data-for-submit')
-const prepareDuplicateData = require('../lib/prepare-data-for-duplicates')
 const checkPreviousApplications = require('../lib/check-previous-applications')
+const checkDuplicateApplications = require('../lib/check-duplicate-applications')
+const saveApplication = require('../lib/save-application')
 const logger = require('../lib/logger')
 const pkg = require('../package.json')
 
@@ -34,27 +35,24 @@ module.exports.getNext = async (request, reply) => {
   const nextForm = getNextForm(yar._store)
   logger('info', ['skjema', 'getNext', applicantId, 'nextForm', nextForm])
   if (payload && payload.stepName === 'grunnlag') {
+    logger('info', ['skjema', 'getNext', applicantId, 'grunnlag'])
     prepareDataForSubmit(request, async (error, document) => {
+      logger('info', ['skjema', 'getNext', applicantId, 'prepare data for submit'])
       if (error) {
+        logger('error', ['skjema', 'getNext', applicantId, 'prepare data for submit', error])
         reply(error)
       } else {
-        const dsfData = yar.get('dsfData')
-        const fodselsNummer = dsfData.FODT.toString() + dsfData.PERS.toString()
-        const duplicateData = prepareDuplicateData(document)
         // Is this a duplicate
-        request.seneca.act({role: 'duplicate', cmd: 'check', duplicateId: fodselsNummer, duplicateData: duplicateData}, function checkDuplicated (error, data) {
-          if (error) {
-            reply(error)
-          } else {
-            if (data.duplicate || yar.get('duplikatSoknad')) {
-              request.yar.set('duplikatSoknad', true)
-              reply.redirect('/soknaduendret')
-            } else {
-              request.yar.set('duplikatSoknad', false)
-              reply.redirect('/' + nextForm)
-            }
-          }
-        })
+        const duplicate = await checkDuplicateApplications(document)
+        if (duplicate || yar.get('duplikatSoknad')) {
+          logger('info', ['skjema', 'getNext', applicantId, 'this is a duplicate'])
+          request.yar.set('duplikatSoknad', true)
+          reply.redirect('/soknaduendret')
+        } else {
+          logger('info', ['skjema', 'getNext', applicantId, 'this is not a duplicate'])
+          request.yar.set('duplikatSoknad', false)
+          reply.redirect('/' + nextForm)
+        }
       }
     })
   } else {
@@ -98,7 +96,7 @@ module.exports.getPreviousStep = (request, reply) => {
 
 module.exports.showSeOver = async (request, reply) => {
   const logoutUrl = config.AUTH_URL_LOGOUT
-  var viewOptions = {
+  let viewOptions = {
     version: pkg.version,
     versionName: pkg.louie.versionName,
     versionVideoUrl: pkg.louie.versionVideoUrl,
@@ -141,6 +139,20 @@ module.exports.showBosted = async (request, reply) => {
   })
 
   reply.view('bosted', viewOptions)
+}
+
+module.exports.showFeil = async (request, reply) => {
+  const logoutUrl = config.AUTH_URL_LOGOUT
+  const viewOptions = {
+    version: pkg.version,
+    versionName: pkg.louie.versionName,
+    versionVideoUrl: pkg.louie.versionVideoUrl,
+    systemName: pkg.louie.systemName,
+    githubUrl: pkg.repository.url,
+    logoutUrl: logoutUrl
+  }
+
+  reply.view('feil', viewOptions)
 }
 
 module.exports.showBostedHybel = async (request, reply) => {
@@ -426,28 +438,30 @@ module.exports.showKvittering = async (request, reply) => {
 
 module.exports.doSubmit = async (request, reply) => {
   const yar = request.yar
-  const sessionId = yar.id
-  const dsfData = yar.get('dsfData')
+  const applicantId = yar.get('applicantId')
   const korData = yar.get('korData')
-  const fodselsNummer = dsfData.FODT.toString() + dsfData.PERS.toString()
+  logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId])
 
-  prepareDataForSubmit(request, function (error, document) {
+  // Prepare data for submit
+  prepareDataForSubmit(request, async (error, document) => {
     if (error) {
-      console.error(error)
+      logger('error', ['skjema', 'doSubmit', 'applicantId', applicantId, 'prepare data for submit', error])
     } else {
-      yar.set('submittedData', document)
-      const duplicateData = prepareDuplicateData(document)
-      // Saves document, posts stats, saves duplicate data, updates queue counter, clears session
-      request.seneca.act({role: 'queue', cmd: 'add', data: document})
-      request.seneca.act({role: 'counter', cmd: 'add', key: 'skoleskyss/queue'})
-      request.seneca.act({role: 'info', info: 'skoleskyss', data: document})
-      request.seneca.act({role: 'duplicate', cmd: 'set', duplicateId: fodselsNummer, data: duplicateData})
-      request.seneca.act({role: 'session', cmd: 'clear', sessionId: sessionId})
-      // Send sms if mobile phone
-      if (korData.MobilePhone !== '') {
-        request.seneca.act({role: 'message', cmd: 'sms', phone: korData.MobilePhone})
-      }
-      reply.redirect('/kvittering')
+      logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId, 'prepare data for submit', 'ready'])
+      saveApplication(document)
+        .then(() => {
+          logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId, 'submitted', 'success'])
+          yar.set('submittedData', document)
+          if (korData.MobilePhone !== '') {
+            request.seneca.act({role: 'message', cmd: 'sms', phone: korData.MobilePhone})
+            reply.redirect('/kvittering')
+          }
+        }).catch(error => {
+          logger('error', ['skjema', 'doSubmit', 'applicantId', applicantId, error])
+          yar.reset()
+          request.cookieAuth.clear()
+          reply.redirect('/feil')
+        })
     }
   })
 }

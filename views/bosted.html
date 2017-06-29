@@ -16,10 +16,12 @@
                 <input type="radio" name="bosted" value="hybel" id="bostedRadio02" class="mdl-radio__button warning-type-selector" required="required">
                 <span class="mdl-radio__label">Jeg skal bo på hybel</span>
             </label><br />
-            <label for="bostedRadio03" class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
-                <input type="radio" name="bosted" value="delt" id="bostedRadio03" class="mdl-radio__button warning-type-selector" required="required">
-                <span class="mdl-radio__label">Jeg har delt bosted ({{showDsfBosted dsfData}} og et sted til)</span>
-            </label><br />
+            <span class="{{showMe dsfDelt}}">
+                <label for="bostedRadio03" class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+                    <input type="radio" name="bosted" value="delt" id="bostedRadio03" class="mdl-radio__button warning-type-selector" required="required">
+                    <span class="mdl-radio__label">Jeg har delt bosted ({{showDsfBosted dsfData}} og {{showDsfBosted dsfDelt}})</span>
+                </label><br />
+            </span>
         </div>
         <div class="mdl-card__actions mdl-card--border">
             <a href="/previous" title="Gå til forrige punkt i søknaden" class="mdl-button mdl-js-button mdl-color-text--black fontBiggerButton">Forrige</a>

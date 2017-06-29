@@ -37,6 +37,7 @@ module.exports.getFrontpage = async (request, reply) => {
   }
 }
 
+// Login, get data from session
 module.exports.start = async (request, reply) => {
   logger('info', ['start'])
   const yar = request.yar

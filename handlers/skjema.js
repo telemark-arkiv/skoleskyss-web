@@ -63,28 +63,34 @@ module.exports.getNext = async (request, reply) => {
 
 module.exports.getPreviousStep = (request, reply) => {
   const yar = request.yar
+  const applicantId = yar.get('applicantId')
   let completedSteps = yar.get('completedSteps')
+  logger('info', ['skjema', 'getPreviousStep', 'applicantId', applicantId])
   if (completedSteps) {
     const previousStep = completedSteps.pop()
     yar.set('completedSteps', completedSteps)
 
     if (previousStep === 'skole') {
+      logger('info', ['skjema', 'getPreviousStep', 'applicantId', applicantId, 'previousStep', 'skole'])
       yar.clear('velgskole')
       yar.clear('velgklasse')
       yar.clear('skoleadresse')
     }
 
     if (previousStep === 'grunnlag') {
+      logger('info', ['skjema', 'getPreviousStep', 'applicantId', applicantId, 'previousStep', 'grunnlag'])
       yar.clear('grunnlag')
     }
 
     if (previousStep === 'bosted') {
+      logger('info', ['skjema', 'getPreviousStep', 'applicantId', applicantId, 'previousStep', 'bosted'])
       yar.clear('bosted')
       yar.clear('bosteddelt')
       yar.clear('bostedhybel')
     }
 
     if (previousStep === 'busskort') {
+      logger('info', ['skjema', 'getPreviousStep', 'applicantId', applicantId, 'previousStep', 'busskort'])
       yar.clear('busskort')
       yar.clear('busskortnummer')
     }
@@ -96,6 +102,8 @@ module.exports.getPreviousStep = (request, reply) => {
 }
 
 module.exports.showSeOver = async (request, reply) => {
+  const yar = request.yar
+  const applicantId = yar.get('applicantId')
   const logoutUrl = config.AUTH_URL_LOGOUT
   let viewOptions = {
     version: pkg.version,
@@ -105,14 +113,15 @@ module.exports.showSeOver = async (request, reply) => {
     githubUrl: pkg.repository.url,
     logoutUrl: logoutUrl
   }
-
+  logger('info', ['skjema', 'showSeOver', 'applicantId', applicantId, 'start'])
   prepareDataForSubmit(request, async (error, document) => {
     if (error) {
-      console.error(error)
+      logger('error', ['skjema', 'showSeOver', 'applicantId', applicantId, error])
     } else {
       viewOptions.document = document
+      logger('info', ['skjema', 'showSeOver', 'applicantId', applicantId, 'start'])
+      reply.view('seover', viewOptions)
     }
-    reply.view('seover', viewOptions)
   })
 }
 
@@ -120,6 +129,7 @@ module.exports.showBosted = async (request, reply) => {
   const yar = request.yar
   const sessionId = request.yar.id
   const dsfData = yar.get('dsfData')
+  const dsfDataDelt = yar.get('dsfDataDelt') || ''
   const logoutUrl = config.AUTH_URL_LOGOUT
   const viewOptions = {
     version: pkg.version,
@@ -128,7 +138,8 @@ module.exports.showBosted = async (request, reply) => {
     systemName: pkg.louie.systemName,
     githubUrl: pkg.repository.url,
     logoutUrl: logoutUrl,
-    dsfData: dsfData
+    dsfData: dsfData,
+    dsfDataDelt: dsfDataDelt
   }
   // Lookup address
   request.seneca.act({

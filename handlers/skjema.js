@@ -13,6 +13,7 @@ const prepareDataForSubmit = require('../lib/prepare-data-for-submit')
 const checkPreviousApplications = require('../lib/check-previous-applications')
 const checkDuplicateApplications = require('../lib/check-duplicate-applications')
 const saveApplication = require('../lib/save-application')
+const sendSMS = require('../lib/send-sms')
 const logger = require('../lib/logger')
 const pkg = require('../package.json')
 
@@ -449,13 +450,16 @@ module.exports.doSubmit = async (request, reply) => {
     } else {
       logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId, 'prepare data for submit', 'ready'])
       saveApplication(document)
-        .then(() => {
+        .then(async () => {
           logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId, 'submitted', 'success'])
           yar.set('submittedData', document)
           if (korData.MobilePhone !== '') {
-            request.seneca.act({role: 'message', cmd: 'sms', phone: korData.MobilePhone})
-            reply.redirect('/kvittering')
+            const msg = await sendSMS(korData.MobilePhone)
+            logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId, 'sms', msg])
+          } else {
+            logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId, 'sms', 'no phonenumber'])
           }
+          reply.redirect('/kvittering')
         }).catch(error => {
           logger('error', ['skjema', 'doSubmit', 'applicantId', applicantId, error])
           yar.reset()

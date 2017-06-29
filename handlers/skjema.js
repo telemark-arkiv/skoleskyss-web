@@ -5,6 +5,7 @@ const config = require('../config')
 const getNextForm = require('../lib/get-next-form')
 const getSkipSteps = require('../lib/get-skip-steps')
 const extractAdressToGeocode = require('../lib/extract-address-to-geocode')
+const lookupSeeiendom = require('../lib/lookup-seeiendom')
 const unwrapGeocoded = require('../lib/unwrap-geocoded')
 const getSkoleFromId = require('../lib/get-skole-from-id')
 const generateGrunnlagListe = require('../lib/generate-grunnlag-liste')
@@ -127,7 +128,7 @@ module.exports.showSeOver = async (request, reply) => {
 
 module.exports.showBosted = async (request, reply) => {
   const yar = request.yar
-  const sessionId = request.yar.id
+  const applicantId = yar.get('applicantId')
   const dsfData = yar.get('dsfData')
   const dsfDataDelt = yar.get('dsfDataDelt') || ''
   const logoutUrl = config.AUTH_URL_LOGOUT
@@ -141,14 +142,9 @@ module.exports.showBosted = async (request, reply) => {
     dsfData: dsfData,
     dsfDataDelt: dsfDataDelt
   }
-  // Lookup address
-  request.seneca.act({
-    role: 'lookup',
-    cmd: 'seeiendom',
-    sessionId: sessionId,
-    key: 'see-dsf',
-    address: extractAdressToGeocode(dsfData)
-  })
+  logger('info', ['skjema', 'showBosted', 'applicantId', applicantId])
+  const seeDsf = await lookupSeeiendom(extractAdressToGeocode(dsfData))
+  yar.set('see-dsf', seeDsf)
 
   reply.view('bosted', viewOptions)
 }

@@ -6,6 +6,7 @@ const getNextForm = require('../lib/get-next-form')
 const getSkipSteps = require('../lib/get-skip-steps')
 const extractAdressToGeocode = require('../lib/extract-address-to-geocode')
 const lookupSeeiendom = require('../lib/lookup-seeiendom')
+const lookupDistance = require('../lib/lookup-distance')
 const unwrapGeocoded = require('../lib/unwrap-geocoded')
 const getSkoleFromId = require('../lib/get-skole-from-id')
 const generateGrunnlagListe = require('../lib/generate-grunnlag-liste')
@@ -311,7 +312,6 @@ module.exports.showVelgKlasse = async (request, reply) => {
   const yar = request.yar
   const applicantId = yar.get('applicantId')
   const logoutUrl = config.AUTH_URL_LOGOUT
-  const sessionId = request.yar.id
   const valgtskole = yar.get('velgskole')
   const hybel = yar.get('bostedhybel')
   const delt = yar.get('bosteddelt')
@@ -333,8 +333,12 @@ module.exports.showVelgKlasse = async (request, reply) => {
     const store = yar._store
     const storeKeys = Object.keys(store).filter(key => /^see/.test(key))
     const distances = storeKeys.map(key => Object.assign({key: key}, yar.get(key))).map(distance => {
+      let measure = {
+        key: distance.key
+      }
       let wp = {}
-      distance.origin = unwrapGeocoded(distance)
+      measure.origin = unwrapGeocoded(distance)
+      measure.destination = destination
       if (distance.key === 'see-dsf') {
         wp = dsf
       }
@@ -350,57 +354,19 @@ module.exports.showVelgKlasse = async (request, reply) => {
       const waypoints = getWaypoints(wp)
 
       if (waypoints.length > 0) {
-        distance.waypoints = waypoints
+        measure.waypoints = waypoints
       }
 
-      return distance
+      return measure
     })
-
     console.log(distances)
-
-    // Calculating walking distance to selected school
-    request.seneca.act({role: 'session', cmd: 'get', sessionId: sessionId}, function (error, data) {
-      if (error) {
-        console.error(error)
-      } else {
-        data.forEach(function (item) {
-          if (/^see/.test(item.key)) {
-            var lookup = {
-              role: 'lookup',
-              cmd: 'distance',
-              key: 'distance-' + item.key,
-              sessionId: sessionId,
-              origin: unwrapGeocoded(item.data),
-              destination: destination
-            }
-            var wp = {}
-
-            if (item.key === 'see-dsf') {
-              wp = dsf
-            }
-
-            if (item.key === 'see-delt') {
-              wp = delt
-            }
-
-            if (item.key === 'see-hybel') {
-              wp = hybel
-            }
-
-            wp.skole = valgtskole.skole
-            const waypoints = getWaypoints(wp)
-
-            if (waypoints.length > 0) {
-              lookup.waypoints = waypoints
-            }
-
-            request.seneca.act(lookup)
-          }
-        })
-      }
-
-      reply.view('velgklasse', viewOptions)
+    const jobs = distances.map(distance => lookupDistance(distance))
+    const results = await Promise.all(jobs)
+    distances.forEach((distance, index) => {
+      const key = `distance-${distance.key}`
+      yar.set(key, results[index])
     })
+    reply.view('velgklasse', viewOptions)
   } else {
     reply.view('velgklasse', viewOptions)
   }

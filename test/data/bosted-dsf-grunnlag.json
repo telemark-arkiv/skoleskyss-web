@@ -1,0 +1,73 @@
+{
+  "expectedHash": "496d8064af63b63563b78cd1c7c4c742845c292b51d5868dbfcaf9ff55d3439d",
+  "data": {
+    "skoleData": {
+      "id": "3733",
+      "name": "Hjalmar Johansen videregående skole, avdeling Fritidsparken",
+      "address": "Moflatvegen 38, 3733 Skien",
+      "geocoded": {
+        "lat": "59.18662",
+        "lon": "9.59623"
+      }
+    },
+    "dsfData": {
+      "ADR": "KYLLINGPARKEN 4 C",
+      "POSTN": "3920",
+      "POSTS": "PORSGRUNN",
+      "GARD": "",
+      "KOMNR": "0805",
+      "BRUK": "",
+      "FODT": "123456",
+      "PERS": "78901",
+      "SPES-KD": "0"
+    },
+    "skjemaUtfyllingStart": 1471207684059,
+    "completedSteps": [
+      "",
+      "confirm",
+      "bosted",
+      "bosteddelt",
+      "velgskole",
+      "velgklasse",
+      "grunnlag",
+      "busskort",
+      "busskortnummer"
+    ],
+    "introOk": true,
+    "bosted": {
+      "stepName": "bosted",
+      "bosted": "folkeregistrert"
+    },
+    "bostedhybel": false,
+    "bosteddelt": {
+      "stepName": "bosteddelt",
+      "ADR": "Karbonadeveien 15",
+      "POSTN": "3902",
+      "POSTS": "Skien",
+      "GARD": "",
+      "BRUK": "",
+      "KOMNR": ""
+    },
+    "velgskole": {
+      "stepName": "velgskole",
+      "skole": "3733"
+    },
+    "skoleadresse": false,
+    "velgstudieretning": false,
+    "velgklasse": {
+      "stepName": "velgklasse",
+      "klassetrinn": "Vg1"
+    },
+    "grunnlag": {
+      "stepName": "grunnlag",
+      "grunnlag": "Avstand"
+    },
+    "duplikatSoknad": false,
+    "busskort": {
+      "stepName": "busskort",
+      "mottattBusskort": "ja"
+    },
+    "soknaduendret": false,
+    "timeStamp": 1471207948713
+  }
+}

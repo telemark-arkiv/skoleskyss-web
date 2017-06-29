@@ -267,7 +267,7 @@ module.exports.showFailWhale = async (request, reply) => {
 module.exports.showVelgSkole = async (request, reply) => {
   const yar = request.yar
   const logoutUrl = config.AUTH_URL_LOGOUT
-  const sessionId = request.yar.id
+  const applicantId = yar.get('applicantId')
   const hybel = yar.get('bostedhybel')
   const delt = yar.get('bosteddelt')
   const skoler = require('../lib/data/skoler.json')
@@ -285,14 +285,9 @@ module.exports.showVelgSkole = async (request, reply) => {
     const key = hybel ? 'see-hybel' : 'see-delt'
     const data = hybel || delt
     const address = extractAdressToGeocode(data)
-    // lookup address
-    request.seneca.act({
-      role: 'lookup',
-      cmd: 'seeiendom',
-      sessionId: sessionId,
-      key: key,
-      address: address
-    })
+    logger('info', ['skjema', 'showVelgskole', 'applicantId', applicantId])
+    const seeData = await lookupSeeiendom(address)
+    yar.set(key, seeData)
   }
 
   reply.view('velgskole', viewOptions)

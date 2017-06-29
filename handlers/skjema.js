@@ -309,6 +309,7 @@ module.exports.showSkoleAdresse = async (request, reply) => {
 
 module.exports.showVelgKlasse = async (request, reply) => {
   const yar = request.yar
+  const applicantId = yar.get('applicantId')
   const logoutUrl = config.AUTH_URL_LOGOUT
   const sessionId = request.yar.id
   const valgtskole = yar.get('velgskole')
@@ -326,8 +327,37 @@ module.exports.showVelgKlasse = async (request, reply) => {
   }
 
   if (valgtskole.skole !== '0000') {
+    logger('info', ['skjema', 'showVelgKlasse', 'applicantId', applicantId, valgtskole.skole])
     const skole = getSkoleFromId(valgtskole.skole)
     const destination = unwrapGeocoded(skole)
+    const store = yar._store
+    const storeKeys = Object.keys(store).filter(key => /^see/.test(key))
+    const distances = storeKeys.map(key => Object.assign({key: key}, yar.get(key))).map(distance => {
+      let wp = {}
+      distance.origin = unwrapGeocoded(distance)
+      if (distance.key === 'see-dsf') {
+        wp = dsf
+      }
+      if (distance.key === 'see-delt') {
+        wp = delt
+      }
+
+      if (distance.key === 'see-hybel') {
+        wp = hybel
+      }
+
+      wp.skole = valgtskole.skole
+      const waypoints = getWaypoints(wp)
+
+      if (waypoints.length > 0) {
+        distance.waypoints = waypoints
+      }
+
+      return distance
+    })
+
+    console.log(distances)
+
     // Calculating walking distance to selected school
     request.seneca.act({role: 'session', cmd: 'get', sessionId: sessionId}, function (error, data) {
       if (error) {

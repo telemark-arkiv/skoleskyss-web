@@ -6,6 +6,7 @@ const server = new Hapi.Server()
 const config = require('./config')
 const skoleskyssService = require('./index')
 const validate = require('./lib/validate-jwt')
+const logger = require('./lib/logger')
 const goodOptions = {
   ops: {
     interval: 900000
@@ -39,7 +40,7 @@ const plugins = [
 
 function endIfError (error) {
   if (error) {
-    console.error(error)
+    logger('error', ['server', error])
     process.exit(1)
   }
 }
@@ -82,7 +83,7 @@ server.register(plugins, error => {
     cookie: 'skoleskyss-session',
     validateFunc: validate,
     redirectTo: config.AUTH_URL_LOGIN,
-    isSecure: false,
+    isSecure: process.env.NODE_ENV !== 'development',
     isSameSite: 'Lax'
   })
 
@@ -99,19 +100,19 @@ function registerRoutes () {
     }
   ], function (err) {
     if (err) {
-      console.error('Failed to load a plugin:', err)
+      logger('error', ['server', 'registerRoutes', err])
     }
   })
 }
 
 module.exports.start = () => {
-  server.start(function () {
-    console.log('Server running at:', server.info.uri)
+  server.start(() => {
+    logger('info', ['server', 'start', 'server running at', server.info.uri])
   })
 }
 
 module.exports.stop = () => {
-  server.stop(function () {
-    console.log('Server stopped')
+  server.stop(() => {
+    logger('info', ['server', 'stop', 'server stopped'])
   })
 }

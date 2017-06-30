@@ -6,6 +6,8 @@ const config = require('../config')
 const pkg = require('../package.json')
 const skoler = require('../lib/data/skoler.json')
 const getSkoleFromId = require('../lib/get-skole-from-id')
+const lookupSeeiendom = require('../lib/lookup-seeiendom')
+const lookupDistance = require('../lib/lookup-distance')
 
 module.exports.showTest = function showTest (request, reply) {
   const logoutUrl = config.AUTH_URL_LOGOUT
@@ -102,50 +104,41 @@ module.exports.showAvstand = function showAvstand (request, reply) {
   reply.view('avstand', viewOptions)
 }
 
-module.exports.calculateAvstand = function (request, reply) {
+module.exports.calculateAvstand = async (request, reply) => {
   const payload = request.payload
   const skoleData = getSkoleFromId(payload.skole)
-  var address = payload.ADR
-  var waypoints = false
+  let address = payload.ADR
+  let waypoints = false
   if (payload.POSTN && payload.POSTS) {
     address = payload.ADR + ', ' + payload.POSTN + ' ' + payload.POSTS
     waypoints = getWaypoints(payload)
   }
   const skoleKoord = skoleData.geocoded.lat + ',' + skoleData.geocoded.lon
+  const seeData = await lookupSeeiendom(address)
+  const addressKoord = seeData.geocoded.lat + ',' + seeData.geocoded.lon
 
-  request.seneca.act({role: 'seeiendom', cmd: 'lookup', address: address}, function (error, data) {
-    if (error) {
-      reply(error)
-    } else {
-      const addressKoord = data.geocoded.lat + ',' + data.geocoded.lon
-      var lookup = {
-        role: 'distance',
-        cmd: 'measure',
-        origin: addressKoord,
-        destination: skoleKoord
-      }
-      if (waypoints) {
-        lookup.waypoints = waypoints
-      }
-      request.seneca.act(lookup, function (err, distance) {
-        if (err) {
-          reply(err)
-        } else {
-          const logoutUrl = config.AUTH_URL_LOGOUT
-          const viewOptions = {
-            version: pkg.version,
-            versionName: pkg.louie.versionName,
-            versionVideoUrl: pkg.louie.versionVideoUrl,
-            systemName: pkg.louie.systemName,
-            githubUrl: pkg.repository.url,
-            logoutUrl: logoutUrl,
-            distance: distance,
-            skoleData: skoleData,
-            address: address
-          }
-          reply.view('avstand-beregnet', viewOptions)
-        }
-      })
-    }
-  })
+  let check = {
+    origin: addressKoord,
+    destination: skoleKoord
+  }
+
+  if (waypoints !== false) {
+    check.waypoints = waypoints
+  }
+
+  const distance = lookupDistance(check)
+
+  const logoutUrl = config.AUTH_URL_LOGOUT
+  const viewOptions = {
+    version: pkg.version,
+    versionName: pkg.louie.versionName,
+    versionVideoUrl: pkg.louie.versionVideoUrl,
+    systemName: pkg.louie.systemName,
+    githubUrl: pkg.repository.url,
+    logoutUrl: logoutUrl,
+    distance: distance,
+    skoleData: skoleData,
+    address: address
+  }
+  reply.view('avstand-beregnet', viewOptions)
 }

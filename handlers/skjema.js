@@ -72,32 +72,32 @@ module.exports.getPreviousStep = (request, reply) => {
   const yar = request.yar
   const applicantId = yar.get('applicantId')
   let completedSteps = yar.get('completedSteps')
-  logger('info', ['skjema', 'getPreviousStep', 'applicantId', applicantId])
+  logger('info', ['skjema', 'getPreviousStep', applicantId])
   if (completedSteps) {
     const previousStep = completedSteps.pop()
     yar.set('completedSteps', completedSteps)
 
     if (previousStep === 'skole') {
-      logger('info', ['skjema', 'getPreviousStep', 'applicantId', applicantId, 'previousStep', 'skole'])
+      logger('info', ['skjema', 'getPreviousStep', applicantId, 'previousStep', 'skole'])
       yar.clear('velgskole')
       yar.clear('velgklasse')
       yar.clear('skoleadresse')
     }
 
     if (previousStep === 'grunnlag') {
-      logger('info', ['skjema', 'getPreviousStep', 'applicantId', applicantId, 'previousStep', 'grunnlag'])
+      logger('info', ['skjema', 'getPreviousStep', applicantId, 'previousStep', 'grunnlag'])
       yar.clear('grunnlag')
     }
 
     if (previousStep === 'bosted') {
-      logger('info', ['skjema', 'getPreviousStep', 'applicantId', applicantId, 'previousStep', 'bosted'])
+      logger('info', ['skjema', 'getPreviousStep', applicantId, 'previousStep', 'bosted'])
       yar.clear('bosted')
       yar.clear('bosteddelt')
       yar.clear('bostedhybel')
     }
 
     if (previousStep === 'busskort') {
-      logger('info', ['skjema', 'getPreviousStep', 'applicantId', applicantId, 'previousStep', 'busskort'])
+      logger('info', ['skjema', 'getPreviousStep', applicantId, 'previousStep', 'busskort'])
       yar.clear('busskort')
       yar.clear('busskortnummer')
     }
@@ -120,13 +120,13 @@ module.exports.showSeOver = async (request, reply) => {
     githubUrl: pkg.repository.url,
     logoutUrl: logoutUrl
   }
-  logger('info', ['skjema', 'showSeOver', 'applicantId', applicantId, 'start'])
+  logger('info', ['skjema', 'showSeOver', applicantId, 'start'])
   prepareDataForSubmit(request, async (error, document) => {
     if (error) {
-      logger('error', ['skjema', 'showSeOver', 'applicantId', applicantId, error])
+      logger('error', ['skjema', 'showSeOver', applicantId, error])
     } else {
       viewOptions.document = document
-      logger('info', ['skjema', 'showSeOver', 'applicantId', applicantId, 'start'])
+      logger('info', ['skjema', 'showSeOver', applicantId, 'start'])
       reply.view('seover', viewOptions)
     }
   })
@@ -148,7 +148,7 @@ module.exports.showBosted = async (request, reply) => {
     dsfData: dsfData,
     dsfDataDelt: dsfDataDelt
   }
-  logger('info', ['skjema', 'showBosted', 'applicantId', applicantId])
+  logger('info', ['skjema', 'showBosted', applicantId])
   const seeDsf = await lookupSeeiendom(extractAdressToGeocode(dsfData))
   yar.set('see-dsf', seeDsf)
 
@@ -332,7 +332,7 @@ module.exports.showVelgKlasse = async (request, reply) => {
   }
 
   if (valgtskole.skole !== '0000') {
-    logger('info', ['skjema', 'showVelgKlasse', 'applicantId', applicantId, valgtskole.skole])
+    logger('info', ['skjema', 'showVelgKlasse', applicantId, valgtskole.skole])
     const skole = getSkoleFromId(valgtskole.skole)
     const destination = unwrapGeocoded(skole)
     const store = yar._store
@@ -444,27 +444,27 @@ module.exports.doSubmit = async (request, reply) => {
   const yar = request.yar
   const applicantId = yar.get('applicantId')
   const korData = yar.get('korData')
-  logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId])
+  logger('info', ['skjema', 'doSubmit', applicantId])
 
   // Prepare data for submit
   prepareDataForSubmit(request, async (error, document) => {
     if (error) {
-      logger('error', ['skjema', 'doSubmit', 'applicantId', applicantId, 'prepare data for submit', error])
+      logger('error', ['skjema', 'doSubmit', applicantId, 'prepare data for submit', error])
     } else {
-      logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId, 'prepare data for submit', 'ready'])
+      logger('info', ['skjema', 'doSubmit', applicantId, 'prepare data for submit', 'ready'])
       saveApplication(document)
         .then(async () => {
-          logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId, 'submitted', 'success'])
+          logger('info', ['skjema', 'doSubmit', applicantId, 'submitted', 'success'])
           yar.set('submittedData', document)
           if (korData.MobilePhone !== '') {
             const msg = await sendSMS(korData.MobilePhone)
-            logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId, 'sms', msg])
+            logger('info', ['skjema', 'doSubmit', applicantId, 'sms', msg])
           } else {
-            logger('info', ['skjema', 'doSubmit', 'applicantId', applicantId, 'sms', 'no phonenumber'])
+            logger('info', ['skjema', 'doSubmit', applicantId, 'sms', 'no phonenumber'])
           }
           reply.redirect('/kvittering')
         }).catch(error => {
-          logger('error', ['skjema', 'doSubmit', 'applicantId', applicantId, error])
+          logger('error', ['skjema', 'doSubmit', applicantId, error])
           yar.reset()
           request.cookieAuth.clear()
           reply.redirect('/feil')
@@ -514,21 +514,21 @@ module.exports.checkConfirm = async (request, reply) => {
   const applicantId = yar.get('applicantId')
   const payload = request.payload
   if (payload.confirmed === 'ja') {
-    logger('info', ['skjema', 'checkConfirm', 'applicantId', applicantId, 'confirmed'])
+    logger('info', ['skjema', 'checkConfirm', applicantId, 'confirmed'])
     const completedSteps = yar.get('completedSteps') || []
     completedSteps.push('confirm')
     yar.set('completedSteps', completedSteps)
     // Is this the first application?
     const duplicate = await checkPreviousApplications(applicantId)
     if (duplicate || yar.get('tidligereSoknad')) {
-      logger('info', ['skjema', 'checkConfirm', 'applicantId', applicantId, 'isDuplicate'])
+      logger('info', ['skjema', 'checkConfirm', applicantId, 'isDuplicate'])
       request.yar.set('tidligereSoknad', true)
       reply.redirect('/sokttidligere')
     } else {
       reply.redirect('/next')
     }
   } else {
-    logger('info', ['skjema', 'checkConfirm', 'applicantId', applicantId, 'fresh applicant'])
+    logger('info', ['skjema', 'checkConfirm', applicantId, 'fresh applicant'])
     reply.redirect('/uriktigeopplysninger')
   }
 }

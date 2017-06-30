@@ -28,6 +28,11 @@ module.exports.getNext = async (request, reply) => {
     let completedSteps = yar.get('completedSteps') || []
     completedSteps.push(payload.stepName)
     yar.set(payload.stepName, payload)
+    if (payload.stepName === 'bosted' && payload.bosted === 'delt') {
+      completedSteps.push('bosteddelt')
+      const delt = yar.get('dsfDataDelt')
+      yar.set('bosteddelt', Object.assign({stepName: 'bosteddelt'}, delt))
+    }
     yar.set('completedSteps', completedSteps)
     const skipSteps = getSkipSteps(yar._store)
     skipSteps.forEach(function (item) {

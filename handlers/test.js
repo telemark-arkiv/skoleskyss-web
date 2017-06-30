@@ -9,7 +9,7 @@ const getSkoleFromId = require('../lib/get-skole-from-id')
 const lookupSeeiendom = require('../lib/lookup-seeiendom')
 const lookupDistance = require('../lib/lookup-distance')
 
-module.exports.showTest = function showTest (request, reply) {
+module.exports.showTest = (request, reply) => {
   const logoutUrl = config.AUTH_URL_LOGOUT
   const viewOptions = {
     version: pkg.version,
@@ -23,7 +23,7 @@ module.exports.showTest = function showTest (request, reply) {
   reply.view('test', viewOptions)
 }
 
-module.exports.setupTest = function setupTest (request, reply) {
+module.exports.setupTest = (request, reply) => {
   const payload = request.payload
   const dsfData = {
     NAVN: payload.NAVN,
@@ -89,7 +89,7 @@ module.exports.setupTest = function setupTest (request, reply) {
   reply.redirect('/')
 }
 
-module.exports.showAvstand = function showAvstand (request, reply) {
+module.exports.showAvstand = (request, reply) => {
   const logoutUrl = config.AUTH_URL_LOGOUT
   const viewOptions = {
     version: pkg.version,
@@ -126,7 +126,7 @@ module.exports.calculateAvstand = async (request, reply) => {
     check.waypoints = waypoints
   }
 
-  const distance = lookupDistance(check)
+  const distance = await lookupDistance(check)
 
   const logoutUrl = config.AUTH_URL_LOGOUT
   const viewOptions = {

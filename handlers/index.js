@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const encryptor = require('simple-encryptor')(config.ENCRYPTOR_KEY)
 const getSessionData = require('../lib/get-session-data')
 const generateApplicantId = require('../lib/generate-applicant-id')
+const filterDsfDelt = require('../lib/filter-dsf-delt')
 const logger = require('../lib/logger')
 const pkg = require('../package.json')
 
@@ -28,18 +29,18 @@ module.exports.getFrontpage = async (request, reply) => {
   }
 
   if (dsfError || korError) {
-    logger('error', ['getFrontpage', applicantId, dsfError, korError])
+    logger('error', ['index', 'getFrontpage', applicantId, dsfError, korError])
     request.cookieAuth.clear()
     reply.redirect('/ikkefunnet')
   } else {
-    logger('info', ['getFrontpage', applicantId, 'success'])
+    logger('info', ['index', 'getFrontpage', applicantId, 'success'])
     reply.view('index', viewOptions)
   }
 }
 
 // Login, get data from session
 module.exports.start = async (request, reply) => {
-  logger('info', ['start'])
+  logger('info', ['index', 'start', 'start'])
   const yar = request.yar
   const receivedToken = request.query.jwt
   const jwtDecrypted = jwt.verify(receivedToken, config.JWT_SECRET)
@@ -48,6 +49,7 @@ module.exports.start = async (request, reply) => {
   const sessionUrl = `${config.SESSIONS_SERVICE}/storage/${jwtData.session}`
   const data = await getSessionData(sessionUrl)
   const applicantId = generateApplicantId(data.dsfData)
+  const dsfDataDelt = filterDsfDelt(data.dsfData)
 
   const tokenOptions = {
     expiresIn: '1h',
@@ -61,18 +63,24 @@ module.exports.start = async (request, reply) => {
   yar.set('korData', data.korData)
   yar.set('applicantId', applicantId)
   yar.set('skjemaUtfyllingStart', new Date().getTime())
+  if (dsfDataDelt !== false) {
+    logger('info', ['index', 'start', applicantId, 'dsfDataDelt'])
+    yar.set('dsfDataDelt', dsfDataDelt)
+  }
 
   const dsfError = data.dsfError
   const korError = data.korError
 
   if (dsfError || korError) {
     if (dsfError && dsfError.CODE === '4') {
+      logger('error', ['index', 'start', 'dsf', dsfError])
       reply.redirect('/failwhale')
     } else {
+      logger('error', ['index', 'start', 'dsf', dsfError])
       reply.redirect('/ikkefunnet')
     }
   } else {
-    logger('info', ['start', applicantId, 'success'])
+    logger('info', ['index', 'start', applicantId, 'success'])
     request.cookieAuth.set({
       token: token,
       isAuthenticated: true,
@@ -144,7 +152,7 @@ module.exports.loggAv = async (request, reply) => {
   const yar = request.yar
   const applicantId = yar.get('applicantId')
   const logoutUrl = config.AUTH_URL_LOGOUT
-  logger('info', ['loggAv', applicantId, 'signing out'])
+  logger('info', ['index', 'loggAv', applicantId, 'signing out'])
 
   request.cookieAuth.clear()
   yar.reset()

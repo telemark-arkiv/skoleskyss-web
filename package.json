@@ -26,7 +26,8 @@
     "test": "standard &&  nsp check && tap --reporter=spec test/**/*.js",
     "coverage": "tap test/**/*.js --coverage",
     "coveralls": "tap --cov --coverage-report=lcov test/**/*.js && cat coverage/lcov.info | coveralls",
-    "standard-fix": "standard --fix"
+    "standard-fix": "standard --fix",
+    "now-deploy": "npm test && now --npm -E production.env && now alias"
   },
   "keywords": [
     "Louie",
@@ -53,6 +54,12 @@
     "url": "https://github.com/telemark/skoleskyss-web/issues"
   },
   "homepage": "https://github.com/telemark/skoleskyss-web",
+  "now": {
+    "alias": [
+      "www.skoleskyss.win"
+    ],
+    "type": "npm"
+  },
   "devDependencies": {
     "coveralls": "2.13.1",
     "nsp": "2.6.3",

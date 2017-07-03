@@ -364,10 +364,12 @@ module.exports.showVelgKlasse = async (request, reply) => {
 
       return measure
     })
+    console.log(distances)
     const jobs = distances.map(distance => lookupDistance(distance))
     const results = await Promise.all(jobs)
     distances.forEach((distance, index) => {
       const key = `distance-${distance.key}`
+      logger('info', ['skjema', 'distances', applicantId, 'adds key', key])
       yar.set(key, results[index])
     })
     reply.view('velgklasse', viewOptions)

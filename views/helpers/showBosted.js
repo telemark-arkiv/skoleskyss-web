@@ -2,8 +2,8 @@
 
 const showDsfBosted = require('./showDsfBosted')
 
-module.exports = function showBosted (data) {
-  var outputs = []
+module.exports = data => {
+  let outputs = []
 
   if (data.bosted.bosted === 'folkeregistrert') {
     outputs.push('Hjemme, på folkeregistrert bosted')

@@ -66,6 +66,8 @@ module.exports.start = async (request, reply) => {
   if (dsfDataDelt !== false) {
     logger('info', ['index', 'start', applicantId, 'dsfDataDelt'])
     yar.set('dsfDataDelt', dsfDataDelt)
+  } else {
+    logger('info', ['index', 'start', applicantId, 'no dsfDataDelt'])
   }
 
   const dsfError = data.dsfError

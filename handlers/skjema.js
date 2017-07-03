@@ -364,7 +364,6 @@ module.exports.showVelgKlasse = async (request, reply) => {
 
       return measure
     })
-    console.log(distances)
     const jobs = distances.map(distance => lookupDistance(distance))
     const results = await Promise.all(jobs)
     distances.forEach((distance, index) => {
@@ -424,6 +423,7 @@ module.exports.showSoknadUendret = async (request, reply) => {
 
 module.exports.showKvittering = async (request, reply) => {
   const yar = request.yar
+  const document = yar.get('submittedData')
   const logoutUrl = config.AUTH_URL_LOGOUT
   const viewOptions = {
     version: pkg.version,
@@ -432,9 +432,9 @@ module.exports.showKvittering = async (request, reply) => {
     systemName: pkg.louie.systemName,
     githubUrl: pkg.repository.url,
     logoutUrl: logoutUrl,
-    document: yar.get('submittedData')
+    document: document
   }
-
+  logger('info', ['skjema', 'showKvittering', document.applicantId])
   yar.reset()
   // request.cookieAuth.clear()
   reply.view('kvittering', viewOptions)

@@ -1,7 +1,7 @@
 'use strict'
 
-module.exports = (document) => {
-  var merknader = []
+module.exports = document => {
+  let merknader = []
 
   if (document.tidligereSoknad) {
     merknader.push('Har søkt tidligere')

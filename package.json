@@ -56,7 +56,7 @@
   "homepage": "https://github.com/telemark/skoleskyss-web",
   "now": {
     "alias": [
-      "www.skoleskyss.win"
+      "skoleskyss.t-fk.no"
     ],
     "type": "npm"
   },

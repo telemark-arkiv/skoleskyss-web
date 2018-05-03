@@ -83,7 +83,7 @@
     "tfk-utils-fix-address-for-seeiendom": "2.0.0",
     "vision": "4.1.1",
     "wgs84-util": "3.0.0",
-    "winston": "2.3.1",
+    "winston": "2.4.2",
     "winston-papertrail": "1.0.5",
     "yar": "8.1.2"
   }

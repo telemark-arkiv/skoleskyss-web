@@ -76,7 +76,7 @@
     "hapi": "16.5.2",
     "hapi-auth-cookie": "7.0.0",
     "inert": "4.2.0",
-    "jsonwebtoken": "7.4.2",
+    "jsonwebtoken": "7.4.3",
     "seeiendom": "4.0.3",
     "simple-encryptor": "1.1.0",
     "tfk-saksbehandling-skoleskyss-waypoints": "1.0.11",

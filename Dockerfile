@@ -1,8 +1,5 @@
-# Setting the base to nodejs 8.3.0
-FROM node:8.3.0-alpine@sha256:811180c902c56e594832bc553bfc5ba8315959a55d453e045bfe77af9b2341cb
-
-# Maintainer
-MAINTAINER Geir Gåsodden
+# Setting the base to nodejs 8.11.1
+FROM node:8.11.1-alpine
 
 #### Begin setup ####
 

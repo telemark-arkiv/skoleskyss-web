@@ -18,7 +18,7 @@
   ],
   "main": "index.js",
   "engines": {
-    "node": ">=8.3.0"
+    "node": ">=8.11.1"
   },
   "scripts": {
     "start": "node standalone.js",
@@ -27,7 +27,8 @@
     "coverage": "tap test/**/*.js --coverage",
     "coveralls": "tap --cov --coverage-report=lcov test/**/*.js && cat coverage/lcov.info | coveralls",
     "standard-fix": "standard --fix",
-    "now-deploy": "npm test && now --npm -E production.env && now alias"
+    "deploy": "npm test && now --npm -E production.env && now alias",
+    "refresh": "rm -rf node_modules && rm package-lock.json && npm install"
   },
   "keywords": [
     "Louie",
@@ -48,17 +49,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/telemark/skoleskyss-web.git"
+    "url": "git+https://github.com/telemark/skoleskyss-web.git"
   },
   "bugs": {
     "url": "https://github.com/telemark/skoleskyss-web/issues"
   },
-  "homepage": "https://github.com/telemark/skoleskyss-web",
+  "homepage": "https://github.com/telemark/skoleskyss-web#readme",
   "now": {
     "alias": [
       "skoleskyss.t-fk.no"
     ],
-    "type": "npm"
+    "type": "npm",
+    "engines": {
+      "node": "8.11.1"
+    }
   },
   "devDependencies": {
     "coveralls": "2.13.1",
@@ -69,14 +73,14 @@
   "dependencies": {
     "axios": "0.16.2",
     "get-skole-aar": "1.0.0",
-    "good": "7.2.0",
-    "good-console": "6.4.0",
+    "good": "7.3.0",
+    "good-console": "7.1.0",
     "good-squeeze": "5.0.2",
     "handlebars": "4.0.10",
     "hapi": "16.6.3",
     "hapi-auth-cookie": "7.0.0",
     "inert": "4.2.0",
-    "jsonwebtoken": "7.4.2",
+    "jsonwebtoken": "8.2.1",
     "seeiendom": "4.0.3",
     "simple-encryptor": "1.1.0",
     "tfk-saksbehandling-skoleskyss-waypoints": "1.0.11",

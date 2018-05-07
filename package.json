@@ -71,7 +71,7 @@
     "tap": "11.1.4"
   },
   "dependencies": {
-    "axios": "0.16.2",
+    "axios": "0.18.0",
     "get-skole-aar": "1.0.0",
     "good": "7.3.0",
     "good-console": "7.1.0",
